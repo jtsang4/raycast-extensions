@@ -1,0 +1,60 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "cubox",
+  "title": "Cubox",
+  "description": "Cubox Extension",
+  "icon": "cubox.png",
+  "author": "jtsang",
+  "owner": "jtsang4",
+  "categories": [
+    "Productivity"
+  ],
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "index",
+      "title": "Cubox",
+      "subtitle": "Search in Cubox",
+      "description": "Search collections in cubox, then open original site or archive",
+      "mode": "view"
+    }
+  ],
+  "preferences": [
+    {
+      "name": "site",
+      "required": true,
+      "title": "Cubox Site",
+      "description": "Configurate Cubox site, e.g. https://cubox.pro or https://cubox.cc",
+      "type": "textfield"
+    },
+    {
+      "name": "token",
+      "required": true,
+      "title": "Cubox Token",
+      "description": "Configurate Cubox token before using this extension",
+      "type": "textfield"
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^1.42.1",
+    "got": "^12.5.2",
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "18.8.3",
+    "@types/react": "18.0.9",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "prettier": "^2.5.1",
+    "typescript": "^4.4.3"
+  },
+  "scripts": {
+    "build": "ray build -e dist",
+    "dev": "ray develop",
+    "fix-lint": "ray lint --fix",
+    "lint": "ray lint",
+    "publish": "ray publish"
+  }
+}
