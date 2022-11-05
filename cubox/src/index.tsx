@@ -9,12 +9,12 @@ export default function Command() {
   const [loading, setLoading] = useState<boolean>(false)
   const [list, setList] = useState<ListItem[]>([])
   const { site } = useMemo(() => getPreferenceValues(), [])
-  const groupsRef = useRef<TagItem[]>([])
+  const tagsRef = useRef<TagItem[]>([])
 
   useEffect(() => {
     const start = async () => {
       const groups = await getTags()
-      groupsRef.current = groups
+      tagsRef.current = groups
     }
     start()
   }, [])
@@ -23,11 +23,11 @@ export default function Command() {
     const trimmedKeyword = keyword.trim()
     if (trimmedKeyword) {
       setLoading(true)
-      const tagName = /^(#\S*)\s*/gi.exec(trimmedKeyword)
       const fulltext = /^(?:\/f)\s*(.*)$/gi.exec(trimmedKeyword)
-      const matchGroup = tagName && tagName[1] !== '#' && groupsRef.current.find(group => group.name === tagName[1].slice(1))
-      if (matchGroup) {
-        const resultList = await searchByTag(matchGroup.tagID)
+      const targetTag = /^(#\S*)\s*(.*)$/gi.exec(trimmedKeyword)
+      const matchTag = targetTag && targetTag[1] !== '#' && tagsRef.current.find(tagItem => tagItem.name === targetTag[1].slice(1))
+      if (matchTag) {
+        const resultList = await searchByTag(matchTag.tagID, targetTag[2])
         setList(resultList)
       } else if (fulltext && fulltext[1]) {
         const resultList = await searchByFulltext(fulltext[1])
@@ -46,11 +46,12 @@ export default function Command() {
       onSearchTextChange={onSearch.current}
     >
       {list.map(listItem => {
-        const { userSearchEngineID, title, description, targetURL, littleIcon } = listItem
+        const { userSearchEngineID, title, description, targetURL } = listItem
         return (
           <List.Item
             key={userSearchEngineID}
-            icon={(typeof littleIcon === 'string' && littleIcon) ? littleIcon : 'list-icon.png'}
+            // icon={(typeof littleIcon === 'string' && littleIcon) ? littleIcon : 'list-icon.png'}
+            icon="list-icon.png"
             title={title}
             subtitle={description}
             actions={

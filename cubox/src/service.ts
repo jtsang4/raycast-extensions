@@ -36,7 +36,7 @@ export const searchByKeyword = async (keyword: string) => {
   return body.data || []
 }
 
-export const searchByTag = async (tagId: string) => {
+export const searchByTag = async (tagId: string, keyword?: string) => {
   if (!tagId) {
     return []
   }
@@ -50,7 +50,7 @@ export const searchByTag = async (tagId: string) => {
       asc: false,
       page: 1,
       filters: '',
-      keyword: '',
+      keyword: keyword || '',
       archiving: false,
       tagId,
     },
