@@ -54,3 +54,17 @@ export interface TagItem {
   parentId: string
 }
 
+export interface GroupItem {
+  groupId: string
+  groupName: string
+  index: number
+  coverContent: any
+  coverType: any
+  coverAdaptive: any
+  archiving: boolean
+  searchEngines: any[]
+  size: number
+  status: any
+  updateTime: string
+  parentGroupId: string
+}

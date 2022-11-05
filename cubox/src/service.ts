@@ -1,6 +1,6 @@
 import { showToast, Toast, getPreferenceValues } from "@raycast/api"
 import got from 'got'
-import type { ListItem, TagItem } from './typing'
+import type { ListItem, TagItem, GroupItem } from './typing'
 
 const showTokenInvalidIssue = () => {
   showToast({
@@ -93,6 +93,34 @@ export const searchByFulltext = async (keyword: string) => {
   return body.data || []
 }
 
+export const searchByGroup = async (groupId: string) => {
+  if (!groupId) {
+    return []
+  }
+  const { token, site } = getPreferenceValues()
+  if (!token) {
+    showTokenInvalidIssue()
+    return []
+  }
+  const { body } = await got.get<{ data: ListItem[] }>(`${site}/c/api/v2/search_engine/my`, {
+    searchParams: {
+      asc: false,
+      page: 1,
+      filters: '',
+      groupId,
+      archiving: false,
+    },
+    responseType: 'json',
+    headers: {
+      authorization: token
+    }
+  }).catch(() => {
+    showTokenInvalidIssue()
+    return { body: { data: [] } }
+  })
+  return body.data || []
+}
+
 export const getTags = async () => {
   const { token, site } = getPreferenceValues()
   if (!token) {
@@ -109,4 +137,22 @@ export const getTags = async () => {
     return { body: { data: { tagList: [] } } }
   })
   return body.data.tagList || []
+}
+
+export const getGroups = async () => {
+  const { token, site } = getPreferenceValues()
+  if (!token) {
+    showTokenInvalidIssue()
+    return []
+  }
+  const { body } = await got.get<{ data: GroupItem[] }>(`${site}/c/api/v2/group/my`, {
+    responseType: 'json',
+    headers: {
+      authorization: token
+    }
+  }).catch(() => {
+    showTokenInvalidIssue()
+    return { body: { data: [] } }
+  })
+  return body.data || []
 }
